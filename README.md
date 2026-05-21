@@ -1,4 +1,4 @@
-<h1 align="center">Tech & Business Article Hub — Frontend</h1>
+<h1 align="center">Tech & Business Article — Frontend</h1>
 
 # Platform Overview
 
