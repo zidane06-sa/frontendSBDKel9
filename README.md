@@ -26,10 +26,9 @@ Platform ini merupakan proyek akhir mata kuliah Sistem Basis Data (SBD) Kelompok
 | Nama | NIM | Role |
 |------|-----|------|
 | Steven | 2406359600 | Backend Developer |
-| Tubagus Dafa Izza Fariz | 2406350122 | Backend Developer |
-| Vanesa Kayla Zahra | 2306161901 | Frontend Developer — Article list, detail, dan submission pages |
-| Aridho Sectio Caesar | 2406421831 | Database Administrator |
-| Salahuddin Zidane A | 2206028200 | Frontend Developer — Admin dashboard dan review management |
+| Tubagus Dafa Izza Fariz | 2406350122 | 
+| Vanesa Kayla Zahra | 2306161901 | 
+| Salahuddin Zidane A | 2206028200 | 
 
 ---
 
