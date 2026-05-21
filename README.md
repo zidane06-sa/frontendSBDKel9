@@ -4,7 +4,7 @@
 
 Tech & Business Article Hub adalah platform publikasi artikel teknologi dan bisnis yang dirancang khusus untuk mahasiswa dan praktisi yang ingin mengikuti perkembangan industri teknologi sekaligus dinamika bisnis global dalam satu tempat terintegrasi.
 
-Frontend ini dibangun menggunakan Next.js 14 App Router dan TypeScript, menyajikan antarmuka pengguna untuk eksplorasi artikel, form submission, dan dashboard pengelolaan konten. Semua request ke backend dikelola melalui API client terpusat di `lib/api.ts` dengan autentikasi berbasis JWT. Sistem review editorial memastikan setiap artikel yang diajukan pengguna melalui proses verifikasi admin sebelum tampil ke publik, sehingga kualitas dan relevansi konten tetap terjaga.
+Frontend ini dibangun menggunakan Next.js 14 App Router dan TypeScript, menyajikan antarmuka pengguna untuk eksplorasi artikel, form submission, dan dashboard pengelolaan konten. Semua request ke backend dikelola melalui API client dengan autentikasi berbasis JWT. Sistem review editorial memastikan setiap artikel yang diajukan pengguna melalui proses verifikasi admin sebelum tampil ke publik, sehingga kualitas dan relevansi konten tetap terjaga.
 
 Platform ini merupakan proyek akhir mata kuliah Sistem Basis Data (SBD) Kelompok 9.
 
