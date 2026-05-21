@@ -566,6 +566,10 @@ class APIClient {
 
   async incrementViews(id: string): Promise<void> {
     if (USE_MOCK_API) return this.mock.incrementViews(id);
+
+    await this.request(`/articles/${id}/views`, {
+      method: 'PATCH',
+    });
   }
 
   async submitArticle(payload: import('./types').SubmitArticlePayload): Promise<{ article: Article }> {

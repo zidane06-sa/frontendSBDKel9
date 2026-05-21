@@ -1,4 +1,4 @@
-// File: C:\Users\zidan\Downloads\final banget ya allah\frontend\app\layout.tsx
+// File: /home/apenchu/Downloads/SBD/MINPRO/miniproject_sbd_frontend/app/layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
