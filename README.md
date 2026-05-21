@@ -23,7 +23,7 @@ Platform ini merupakan proyek akhir mata kuliah Sistem Basis Data (SBD) Kelompok
 
 ## Anggota Kelompok 9
 
-| Nama | NIM | 
+| Nama | NPM | 
 |------|-----|
 | Steven | 2406359600 |
 | Tubagus Dafa Izza Fariz | 2406350122 | 
