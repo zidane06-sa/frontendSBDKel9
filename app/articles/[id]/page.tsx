@@ -12,6 +12,7 @@ import { api } from '@/lib/api';
 import { Article } from '@/lib/types';
 import { ArrowLeft, Eye, Bookmark, BookmarkCheck } from 'lucide-react';
 import { useBookmarks } from '@/hooks/use-bookmarks';
+import { useRecentlyViewed } from '@/hooks/use-recently-viewed';
 
 export default function ArticleDetailPage() {
   const params = useParams();
@@ -21,6 +22,7 @@ export default function ArticleDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const { ready, isBookmarked, toggleBookmark } = useBookmarks();
+  const { addRecentlyViewed } = useRecentlyViewed();
 
   useEffect(() => {
     const loadArticle = async () => {
@@ -29,6 +31,7 @@ export default function ArticleDetailPage() {
         setError('');
         const { article } = await api.getArticle(articleId);
         setArticle(article);
+        addRecentlyViewed(article.id);
         
         // Increment views
         try {
@@ -45,7 +48,7 @@ export default function ArticleDetailPage() {
     };
 
     loadArticle();
-  }, [articleId]);
+  }, [articleId, addRecentlyViewed]);
 
   if (loading) {
     return (
