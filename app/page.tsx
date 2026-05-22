@@ -6,13 +6,17 @@ import { Header } from '@/components/header';
 import { ArticleCard } from '@/components/article-card';
 import { ArticleCardSkeleton } from '@/components/article-card-skeleton';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { api } from '@/lib/api';
 import { Article } from '@/lib/types';
 import { ChevronRight } from 'lucide-react';
+import { useRecentlyViewed } from '@/hooks/use-recently-viewed';
 
 export default function HomePage() {
   const [featured, setFeatured] = useState<Article[]>([]);
+  const [recentlyViewed, setRecentlyViewed] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
+  const { recentlyViewedIds, ready, clearRecentlyViewed } = useRecentlyViewed();
 
   useEffect(() => {
     const loadFeatured = async () => {
@@ -29,10 +33,43 @@ export default function HomePage() {
     loadFeatured();
   }, []);
 
+  useEffect(() => {
+    const loadRecentlyViewed = async () => {
+      if (!ready || recentlyViewedIds.length === 0) {
+        setRecentlyViewed([]);
+        return;
+      }
+
+      try {
+        const articles = await Promise.all(
+          recentlyViewedIds.map(async (id) => {
+            try {
+              const { article } = await api.getArticle(id);
+              return article;
+            } catch {
+              return null;
+            }
+          })
+        );
+
+        const orderedArticles = recentlyViewedIds
+          .map((id) => articles.find((article) => article?.id === id))
+          .filter((article): article is Article => Boolean(article));
+
+        setRecentlyViewed(orderedArticles);
+      } catch (err) {
+        console.error('[v0] Failed to load recently viewed articles:', err);
+        setRecentlyViewed([]);
+      }
+    };
+
+    loadRecentlyViewed();
+  }, [recentlyViewedIds, ready]);
+
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <main className="min-h-screen bg-linear-to-b from-blue-50 to-white">
         {/* Hero Section */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32">
           <div className="text-center space-y-6">
@@ -97,9 +134,48 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Recently Viewed Section */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="space-y-8">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <h2 className="text-3xl font-bold">Recently Viewed</h2>
+                <p className="text-muted-foreground mt-2">
+                  Articles you opened most recently
+                </p>
+              </div>
+              {recentlyViewed.length > 0 && (
+                <Button variant="outline" onClick={clearRecentlyViewed}>
+                  Clear Recent
+                </Button>
+              )}
+            </div>
+
+            {recentlyViewed.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {recentlyViewed.map((article) => (
+                  <ArticleCard
+                    key={article.id}
+                    article={article}
+                    featured={article.featured}
+                  />
+                ))}
+              </div>
+            ) : (
+              <Card>
+                <CardContent className="py-12 text-center">
+                  <p className="text-muted-foreground">
+                    Open any article to see it appear here.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t">
-          <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg p-8 sm:p-12 text-white text-center space-y-4">
+          <div className="bg-linear-to-r from-blue-500 to-indigo-600 rounded-lg p-8 sm:p-12 text-white text-center space-y-4">
             <h3 className="text-3xl font-bold">Share Your Knowledge</h3>
             <p className="text-lg opacity-90">
               Join our community and publish your own articles

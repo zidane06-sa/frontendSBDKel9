@@ -10,7 +10,9 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { api } from '@/lib/api';
 import { Article } from '@/lib/types';
-import { ArrowLeft, Eye } from 'lucide-react';
+import { ArrowLeft, Eye, Bookmark, BookmarkCheck } from 'lucide-react';
+import { useBookmarks } from '@/hooks/use-bookmarks';
+import { useRecentlyViewed } from '@/hooks/use-recently-viewed';
 
 export default function ArticleDetailPage() {
   const params = useParams();
@@ -19,7 +21,10 @@ export default function ArticleDetailPage() {
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  
   const hasViewed = useRef(false);
+  const { ready, isBookmarked, toggleBookmark } = useBookmarks();
+  const { addRecentlyViewed } = useRecentlyViewed();
 
   useEffect(() => {
     const loadArticle = async () => {
@@ -28,8 +33,8 @@ export default function ArticleDetailPage() {
         setError('');
         const { article } = await api.getArticle(articleId);
         setArticle(article);
+        addRecentlyViewed(article.id);
         
-        // Increment views
         if (!hasViewed.current) {
           hasViewed.current = true;
           try {
@@ -47,7 +52,7 @@ export default function ArticleDetailPage() {
     };
 
     loadArticle();
-  }, [articleId]);
+  }, [articleId, addRecentlyViewed]);
 
   if (loading) {
     return (
@@ -94,16 +99,38 @@ export default function ArticleDetailPage() {
       <main className="min-h-screen bg-background">
         <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Back Button */}
-          <Button variant="ghost" asChild className="mb-8">
-            <Link href="/articles" className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Articles
-            </Link>
-          </Button>
+          <div className="mb-8 flex items-center justify-between gap-3">
+            <Button variant="ghost" asChild>
+              <Link href="/articles" className="gap-2">
+                <ArrowLeft className="h-4 w-4" />
+                Back to Articles
+              </Link>
+            </Button>
+
+            {ready && (
+              <Button
+                variant="outline"
+                onClick={() => toggleBookmark(article.id)}
+                className="gap-2"
+              >
+                {isBookmarked(article.id) ? (
+                  <>
+                    <BookmarkCheck className="h-4 w-4" />
+                    Saved
+                  </>
+                ) : (
+                  <>
+                    <Bookmark className="h-4 w-4" />
+                    Save
+                  </>
+                )}
+              </Button>
+            )}
+          </div>
 
           {/* Hero Image */}
           {article.image && (
-            <div className="mb-8 rounded-lg overflow-hidden bg-gradient-to-br from-blue-100 to-indigo-100 h-96">
+            <div className="mb-8 rounded-lg overflow-hidden bg-linear-to-br from-blue-100 to-indigo-100 h-96">
               <img
                 src={article.image}
                 alt={article.title}

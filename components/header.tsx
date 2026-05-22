@@ -37,6 +37,9 @@ export function Header() {
           <Link href="/articles" className="text-sm hover:text-primary transition-colors">
             Articles
           </Link>
+          <Link href="/bookmarks" className="text-sm hover:text-primary transition-colors">
+            Bookmarks
+          </Link>
           {isAuthenticated && (
             <Link href="/dashboard" className="text-sm hover:text-primary transition-colors">
               Dashboard

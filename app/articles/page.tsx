@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { Header } from '@/components/header';
 import { ArticleCard } from '@/components/article-card';
 import { ArticleCardSkeleton } from '@/components/article-card-skeleton';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -27,12 +26,18 @@ const CATEGORIES = [
   'Other',
 ];
 
+const SORT_OPTIONS = [
+  { value: 'newest', label: 'Newest' },
+  { value: 'oldest', label: 'Oldest' },
+  { value: 'popular', label: 'Most Viewed' },
+];
+
 export default function ArticlesPage() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
-  const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
+  const [sortBy, setSortBy] = useState('newest');
 
   useEffect(() => {
     const loadArticles = async () => {
@@ -95,6 +100,22 @@ export default function ArticlesPage() {
                   </SelectContent>
                 </Select>
               </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">Sort by</span>
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SORT_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             {/* Articles Grid */}
@@ -105,8 +126,22 @@ export default function ArticlesPage() {
                 ))}
               </div>
             ) : articles.length > 0 ? (
+              (() => {
+                const sortedArticles = [...articles].sort((left, right) => {
+                  if (sortBy === 'oldest') {
+                    return new Date(left.createdAt).getTime() - new Date(right.createdAt).getTime();
+                  }
+
+                  if (sortBy === 'popular') {
+                    return right.views - left.views;
+                  }
+
+                  return new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime();
+                });
+
+                return (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {articles.map((article) => (
+                {sortedArticles.map((article) => (
                   <ArticleCard
                     key={article.id}
                     article={article}
@@ -114,6 +149,8 @@ export default function ArticlesPage() {
                   />
                 ))}
               </div>
+                );
+              })()
             ) : (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">No articles found</p>
