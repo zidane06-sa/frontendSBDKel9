@@ -171,6 +171,18 @@ npm start
 ```
 
 ---
+## Alasan Memilih MongoDB
+
+| Aspek | MongoDB (Document Store) | PostgreSQL (Relational) |
+|-------|--------------------------|-------------------------|
+| Skema | Fleksibel per dokumen | Kaku, perlu ALTER TABLE |
+| JOIN | Tidak diperlukan | Diperlukan untuk relasi |
+| Performa fetch 50 artikel | 139,90 ms | 3894,80 ms |
+| Kecepatan relatif | **27,84x lebih cepat** | Baseline |
+
+Hasil pengujian langsung kelompok ini membuktikan bahwa MongoDB jauh lebih efisien untuk workload platform artikel dibandingkan PostgreSQL. Hal ini sejalan dengan studi kasus Forbes yang mencatat rata-rata 7x lebih cepat dari SQL setelah migrasi ke MongoDB Atlas.
+
+---
 
 ## Repositori Terkait
 
