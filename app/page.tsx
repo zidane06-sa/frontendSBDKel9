@@ -16,7 +16,7 @@ export default function HomePage() {
   const [featured, setFeatured] = useState<Article[]>([]);
   const [recentlyViewed, setRecentlyViewed] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
-  const { recentlyViewedIds, ready } = useRecentlyViewed();
+  const { recentlyViewedIds, ready, clearRecentlyViewed } = useRecentlyViewed();
 
   useEffect(() => {
     const loadFeatured = async () => {
@@ -144,6 +144,11 @@ export default function HomePage() {
                   Articles you opened most recently
                 </p>
               </div>
+              {recentlyViewed.length > 0 && (
+                <Button variant="outline" onClick={clearRecentlyViewed}>
+                  Clear Recent
+                </Button>
+              )}
             </div>
 
             {recentlyViewed.length > 0 ? (
