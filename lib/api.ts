@@ -464,6 +464,14 @@ class APIClient {
     setStoredToken(null);
   }
 
+  async deleteAccount(): Promise<void> {
+    if (USE_MOCK_API) return this.logout();
+
+    await this.request('/auth/me', {
+      method: 'DELETE',
+    });
+  }
+
   async getCurrentUser(): Promise<{ user: User | null }> {
     if (USE_MOCK_API) return this.mock.getCurrentUser();
 

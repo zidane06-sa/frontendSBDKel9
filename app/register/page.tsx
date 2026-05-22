@@ -11,7 +11,7 @@ import Link from 'next/link';
 export default function RegisterPage() {
   const router = useRouter();
   const { register, error, isAuthenticated } = useAuth();
-  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -28,7 +28,7 @@ export default function RegisterPage() {
     e.preventDefault();
     setLocalError('');
 
-    if (!username || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
       setLocalError('Please fill in all fields');
       return;
     }
@@ -45,7 +45,7 @@ export default function RegisterPage() {
 
     try {
       setLoading(true);
-      await register({ username, email, password });
+      await register({ username: name, email, password });
     } catch (err) {
       setLocalError(err instanceof Error ? err.message : 'Registration failed');
     } finally {
@@ -69,15 +69,15 @@ export default function RegisterPage() {
             )}
 
             <div className="space-y-2">
-              <label htmlFor="username" className="text-sm font-medium">
-                Username
+              <label htmlFor="name" className="text-sm font-medium">
+                Name
               </label>
               <Input
-                id="username"
+                id="name"
                 type="text"
                 placeholder="Name"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 disabled={loading}
               />
             </div>

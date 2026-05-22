@@ -1,4 +1,4 @@
-// File: /home/apenchu/Downloads/SBD/MINPRO/miniproject_sbd_frontend/app/articles/[id]/page.tsx
+// File: /Users/tubagusdafa/Developer/SBD/SBDKel9_Project/frontendSBDKel9/app/articles/[id]/page.tsx
 import * as entry from '../../../../../app/articles/[id]/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

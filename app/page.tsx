@@ -38,7 +38,7 @@ export default function HomePage() {
           <div className="text-center space-y-6">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-balance">
               Discover Thoughtful
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+              <span className="block bg-gradient-to-r from-blue-600 to-indigo-400 bg-clip-text text-transparent">
                 Articles & Ideas
               </span>
             </h1>

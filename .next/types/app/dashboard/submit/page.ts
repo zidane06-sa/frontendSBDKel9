@@ -1,4 +1,4 @@
-// File: /home/apenchu/Downloads/SBD/MINPRO/miniproject_sbd_frontend/app/dashboard/submit/page.tsx
+// File: /Users/tubagusdafa/Developer/SBD/SBDKel9_Project/frontendSBDKel9/app/dashboard/submit/page.tsx
 import * as entry from '../../../../../app/dashboard/submit/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

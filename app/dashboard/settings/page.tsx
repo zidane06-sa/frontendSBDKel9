@@ -6,12 +6,25 @@ import { Header } from '@/components/header';
 import { DashboardSidebar } from '@/components/dashboard-sidebar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { useEffect, useState } from 'react';
+import { api } from '@/lib/api';
 
 export default function SettingsPage() {
   const { user, logout, isAuthenticated, loading: authLoading } = useAuth();
   const router = useRouter();
   const [loggingOut, setLoggingOut] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -27,6 +40,18 @@ export default function SettingsPage() {
       console.error('[v0] Logout failed:', err);
     } finally {
       setLoggingOut(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      setIsDeleting(true);
+      await api.deleteAccount();
+      await logout();
+    } catch (err) {
+      console.error('Failed to delete account:', err);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -55,7 +80,7 @@ export default function SettingsPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <label className="text-sm text-muted-foreground">Name</label>
+                    <label className="text-sm text-muted-foreground">Name / Username</label>
                     <p className="font-semibold">{user?.name}</p>
                   </div>
                   <div>
@@ -77,20 +102,18 @@ export default function SettingsPage() {
                 </CardContent>
               </Card>
 
-              {/* Danger Zone */}
-              <Card className="border-red-200 bg-red-50">
-                <CardHeader>
-                  <CardTitle className="text-red-600">Danger Zone</CardTitle>
-                  <CardDescription>Irreversible actions</CardDescription>
-                </CardHeader>
+              {/* Account Actions */}
+              <Card>
                 <CardContent>
-                  <div>
-                    <h4 className="font-semibold mb-2">Logout</h4>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Sign out of your account. You&apos;ll be logged out from all devices.
-                    </p>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold">Logout</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Sign out of your account on this device.
+                      </p>
+                    </div>
                     <Button
-                      variant="destructive"
+                      variant="outline"
                       onClick={handleLogout}
                       disabled={loggingOut}
                     >
@@ -99,6 +122,45 @@ export default function SettingsPage() {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Danger Zone */}
+              <Card className="border-red-200 bg-red-50">
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold text-red-600">Delete Account</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Permanently remove your account and all associated data.
+                      </p>
+                    </div>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="destructive"
+                          disabled={isDeleting}
+                        >
+                          {isDeleting ? 'Deleting...' : 'Delete Account'}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone. This will permanently delete your account and remove your data from our servers.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction onClick={handleDeleteAccount} className="bg-red-600 hover:bg-red-700">
+                            Delete Account
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                </CardContent>
+              </Card>
+
             </div>
           </div>
         </main>

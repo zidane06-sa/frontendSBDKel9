@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Header } from '@/components/header';
@@ -19,6 +19,7 @@ export default function ArticleDetailPage() {
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const hasViewed = useRef(false);
 
   useEffect(() => {
     const loadArticle = async () => {
@@ -29,10 +30,13 @@ export default function ArticleDetailPage() {
         setArticle(article);
         
         // Increment views
-        try {
-          await api.incrementViews(articleId);
-        } catch (err) {
-          console.error('[v0] Failed to increment views:', err);
+        if (!hasViewed.current) {
+          hasViewed.current = true;
+          try {
+            await api.incrementViews(articleId);
+          } catch (err) {
+            console.error('[v0] Failed to increment views:', err);
+          }
         }
       } catch (err) {
         setError('Article not found');

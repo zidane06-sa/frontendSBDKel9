@@ -34,8 +34,8 @@ export default function DashboardPage() {
   const loadArticles = async () => {
     try {
       const response = isAdmin
-        ? await api.getAdminArticles()
-        : await api.getArticles();
+      ? await api.getAdminArticles()
+      : await api.getArticles();
       setArticles(response.articles);
     } catch (err) {
       console.error('[v0] Failed to load articles:', err);
@@ -61,9 +61,9 @@ export default function DashboardPage() {
             <div className="space-y-8">
               {/* Header */}
               <div>
-                <h1 className="text-3xl font-bold">Dashboard</h1>
+                <h1 className="text-3xl font-bold">Platform Overview</h1>
                 <p className="text-muted-foreground mt-2">
-                  Welcome back! Here&apos;s an overview of your articles.
+                  Welcome back! Here is the current global activity across the platform.
                 </p>
               </div>
 
@@ -113,7 +113,7 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-2xl font-bold">Recent Articles</h2>
-                    <p className="text-muted-foreground">Your latest published articles</p>
+                    <p className="text-muted-foreground">Latest publications from all users</p>
                   </div>
                   {isAdmin && (
                     <Button asChild>

@@ -13,7 +13,7 @@ interface ArticleCardProps {
 export function ArticleCard({ article, featured }: ArticleCardProps) {
   return (
     <Link href={`/articles/${article.id}`}>
-      <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
+      <Card className="h-full shadow-none rounded-3xl overflow-hidden transition-colors hover:bg-slate-50 cursor-pointer group">
         {article.image && (
           <div className="relative w-full h-48 bg-gradient-to-br from-blue-100 to-indigo-100 overflow-hidden">
             <img
